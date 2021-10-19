@@ -1,24 +1,26 @@
 #include "protheus.ch"
 #include "fwmvcdef.ch"
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} Playlist
     Cria o Browse da nossa rotina da playlist 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oBrowse Recebe um Buttom, que habilitar uma tela para o cadastro
     do Premium
-    @param oBrowse Recebe o FwMBrowse, que Ã© o responsavel por criar o
+    @param oBrowse Recebe o FwMBrowse, que é o responsavel por criar o
     Browse no Protheus. 
     @return nil
 /*/
+//-------------------------------------------------------------------
 
 Return
 
 User Function Playlist()
-Local aButtons :=Â {{.F.,Nil},{.F.,Nil},{.F.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,"Salvar"},{.T.,"Cancelar"},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil}}
+Local aButtons := {{.F.,Nil},{.F.,Nil},{.F.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,"Salvar"},{.T.,"Cancelar"},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil}}
 Local oBrowse := FWMBrowse():New() 
 
-    If MsgYesNo('VocÃª jÃ¡ possui o Premium?')
+    If MsgYesNo('Você já possui o Premium?')
 
         oBrowse:SetAlias('ZA7')  
         oBrowse:SetDescription('Playlist')
@@ -27,7 +29,7 @@ Local oBrowse := FWMBrowse():New()
 
         ElseIf MsgYesNo('Deseja ser premium')
 
-            FWExecView('CadastroÂ Premium','IOS04',Â MODEL_OPERATION_INSERT,Â ,Â {Â ||Â .T.Â },Â ,Â ,aButtonsÂ )
+            FWExecView('Cadastro Premium','IOS04', MODEL_OPERATION_INSERT, , { || .T. }, , ,aButtons )
  
         Else  
 
@@ -45,26 +47,28 @@ Static Function MenuDef()
 
 Return FWMVCMenu("IOS02")
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} MenuDef
     Cria o menu da nossa rotina da playlist 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oModel Recebe o MPFormModel, que fornece o objeto com o modelo
-    hierÃ¡rquico dos campos de ediÃ§Ã£o.
-    @param oStruZA7 Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    hierárquico dos campos de edição.
+    @param oStruZA7 Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA7.
-    @param oStruZA8 Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruZA8 Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA8, que nos traz o grid, com as musicas da playlist
-    @param oStruSel Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruSel Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA0, para nos trazer os nossos autores registrados.
-    @param oStruAlb Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruAlb Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA3, para trazer os nossos album registrados.
     Return oModel 
 /*/
+//-------------------------------------------------------------------
 Static Function ModelDef()
 Local oModel := MPFormModel():new("IOSPLAY",/*{|| MyPreModelValid()}*/, /*{|| MyPosModelValid()}*/)
 Local oStruZA7 := FWFormStruct(1, "ZA7") 
@@ -96,21 +100,21 @@ local oStruAlb :=  FWFormStruct(1, "ZA3")
 
     //cria o grid
     oModel:AddGrid( 'BUSCA', 'MASTER', oStruSel, /*bLinePre*/, /*bLinePost*/, /*bPreVal*/, /*bPosVal*/, /*BLoad*/ )
-    oModel:GetModel( 'BUSCA' ):SetDescription( 'Copiar mÃºsicas' )
+    oModel:GetModel( 'BUSCA' ):SetDescription( 'Copiar músicas' )
 
     oModel:AddGrid( 'BUSCAALB', 'MASTER', oStruAlb, /*bLinePre*/, /*bLinePost*/, /*bPreVal*/, /*bPosVal*/, /*BLoad*/ )
-    oModel:GetModel( 'BUSCAALB' ):SetDescription( 'Copiar mÃºsicas' )
+    oModel:GetModel( 'BUSCAALB' ):SetDescription( 'Copiar músicas' )
 
     //define que o grid nao deve ser gravado no banco de dados 
     oModel:GetModel('BUSCA'):SetOnlyQuery(.T.) 
 
-    //define que o grid nao Ã© obrigatorio
+    //define que o grid nao é obrigatorio
     oModel:GetModel('BUSCA'):SetOptional(.T.) 
 
     //define que o grid nao deve ser gravado no banco de dados 
     oModel:GetModel('BUSCAALB'):SetOnlyQuery(.T.) 
 
-    //define que o grid nao Ã© obrigatorio
+    //define que o grid nao é obrigatorio
     oModel:GetModel('BUSCAALB'):SetOptional(.T.)
 
     oModel:SetRelation( 'ZA8DETAIL', ;
@@ -125,26 +129,28 @@ local oStruAlb :=  FWFormStruct(1, "ZA3")
  
 Return oModel 
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} ViewDef
     Cria o View da nossa rotina da playlist 
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param oView Recebe o FWFormView, fornece uma visualizaÃ§Ã£o grafica da
+    @param oView Recebe o FWFormView, fornece uma visualização grafica da
     nossa rotina.
-    @param oStruZA7 Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruZA7 Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA7.
-    @param oStruZA8 Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruZA8 Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA8, que nos traz o grid, com as musicas da playlist
-    @param oStruSel Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruSel Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA0, para nos trazer os nossos autores registrados.
-    @param oStruAlb Recebe o FWFormStruct, ele Ã© quem fornece as estruturas
+    @param oStruAlb Recebe o FWFormStruct, ele é quem fornece as estruturas
     de metadados do dicionario de dados, ele esta pegando os dados da tabela
     ZA3, para trazer os nossos album registrados.
     Return oView
 /*/
+//-------------------------------------------------------------------
 
 Static Function ViewDef()
 Local oView := FWFormView():New()
@@ -179,7 +185,7 @@ local oStruAlb := FWFormStruct(2,"ZA3")
     oView:AddGrid("GRID_ZA8", oStruZA8, "ZA8DETAIL")
     oView:addIncrementField("GRID_ZA8", "ZA8_ITEM")
     oView:EnableTitleView("GRID_ZA8", "Musicas") 
-   //oView:SetViewProperty( 'GRID_ZA2', "ENABLEDGRIDDETAIL", { 20 } )
+   // oView:SetViewProperty( 'GRID_ZA2', "ENABLEDGRIDDETAIL", { 20 } )
 
     oStruConsulta:SetProperty("ZA0_CODIGO",MVC_VIEW_CANCHANGE,.F.) 
     oStruConsulta:SetProperty("ZA0_NOME",MVC_VIEW_CANCHANGE,.F.)
@@ -222,8 +228,9 @@ local oStruAlb := FWFormStruct(2,"ZA3")
 
 Return oView
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} validQtde
-    Valida a Quantidade de mÃºsica adicionada no Grid, caso o cliente nÃ£o seja 
+    Valida a Quantidade de música adicionada no Grid, caso o cliente não seja 
     premium
     @author Matheus S. Oliveira
     @since 28/11/2019
@@ -233,6 +240,7 @@ Return oView
     returnlRet 
     
 /*/
+//-------------------------------------------------------------------
 
 User Function validQtde(oGridModel)
     Local oModel := FwModelActive()
@@ -252,17 +260,19 @@ User Function validQtde(oGridModel)
  
 Return lRet  
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} MusRepit
-    Valida se existe mÃºsicas repetidas
+    Valida se existe músicas repetidas
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param cCodigo Recebera o cÃ³digo da mÃºsica
+    @param cCodigo Recebera o código da música
     @param oModel Recebe o nosso modelo da ZA7
     @param oModelGrid Recebe o Grid da ZA8
-    @param aArea Recebe um GetArea para podermos dar um RestArea logo apÃ³s a execuÃ§Ã£o
+    @param aArea Recebe um GetArea para podermos dar um RestArea logo após a execução
     Return NIL
 
 /*/
+//-------------------------------------------------------------------
 
 User function MusRepit(cCodigo,oModelGrid)
 
@@ -273,7 +283,7 @@ local aArea := GetArea()
 
     If cCodigo == NIL
 
-        cCodigo := FwInputBox("Digite o cÃ³digo da mÃºsica para copiar!")
+        cCodigo := FwInputBox("Digite o código da música para copiar!")
     EndIf
 
     If oModelGrid == NIL
@@ -286,7 +296,7 @@ local aArea := GetArea()
     
     If DbSeek(xFilial('ZA4') + PadR(cCodigo,TamSx3('ZA4_ALBUM')[1])) 
         While ZA4->(!EOF()) .AND. ZA4->ZA4_FILIAL == xFilial("ZA4") .AND. ZA4->ZA4_ALBUM == cCodigo
-            IF oModelGrid:SeekLine({{"ZA4_ALBUM",ZA4->ZA4_ALBUM},{"ZA4_MUSICA",ZA4->ZA4_MUSICA}}, .F., .F.) // Busca no grid da tela se jÃƒÂƒ Â¡ existe o autor que eu quero incluir
+            IF oModelGrid:SeekLine({{"ZA4_ALBUM",ZA4->ZA4_ALBUM},{"ZA4_MUSICA",ZA4->ZA4_MUSICA}}, .F., .F.) // Busca no grid da tela se jÃƒ ¡ existe o autor que eu quero incluir
                 oModelGrid:AddLine() //cria uma linha nova em branco no grid 
                 oModelGrid:SetValue('ZA8_ALBUM',ZA4->ZA4_ALBUM)
                 oModelGrid:SetValue('ZA8_CODIGO',ZA4->ZA4_MUSICA) 
@@ -299,22 +309,24 @@ local aArea := GetArea()
 
         EndDo        
     Else
-        Help( ,, 'HELP',, 'CÃ³digo invalido', 1, 0)   
+        Help( ,, 'HELP',, 'Código invalido', 1, 0)   
     EndIf 
 
 RestArea(aArea)//restaura estado da tabela ativa
 return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} MusRepit
     Conta o total de faixas (musicas), que foi adicionada na playlist
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param nX recebe 1, para iniciar a contagem
-    @param nContagem Recebe quantas faixas tem na mÃºsica, inicia com 0
+    @param nContagem Recebe quantas faixas tem na música, inicia com 0
     @param oGrid Recebe o Grid da ZA8, para que possa ser feita a contagem
     Return nX
     
 /*/
+//-------------------------------------------------------------------
 
 User function Faixas(oView)
 Local nX
@@ -329,54 +341,60 @@ Local oGrid := oView:Getmodel():getModel("ZA8DETAIL")
     Help(NIL, NIL, "Total de faixas", NIL, "Voce contem o Total de " + cValtochar(nContagem) + " musicas cadastradas", 1, 0,)
 Return nX
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} BotaoCop
-    Cria dois botÃµes, sendo um para selecionar todos e outro para copiar as mÃºsicas 
+    Cria dois botões, sendo um para selecionar todos e outro para copiar as músicas 
     de um determinado autor.
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param oPanel Responsavel para criar o nosso panel dos botÃµes
-    @param oOtherObject Responsavel para receber a funÃ§Ã£o de selecionar/copiar musicas.
+    @param oPanel Responsavel para criar o nosso panel dos botões
+    @param oOtherObject Responsavel para receber a função de selecionar/copiar musicas.
     
     Return oPanel
     
 /*/
+//-------------------------------------------------------------------
 
 Static function BotaoCop(oPanel,oOtherObject)
-  Â   Â   Â   Â TButton():New(  Â 01,  Â 010,  Â "Selecionar Todos",oPanel,{||SelGrid(oOtherObject)},  Â 60,10,,,.F.,.T.,.F.,,.F.,,,.F.  Â )  Â 
-  Â   Â   Â   Â TButton():New(  Â 01,  Â 080,  Â "Copiar Musicas",oPanel,{||CopiaMus(oOtherObject)},  Â 80,10,,,.F.,.T.,.F.,,.F.,,,.F.  Â )
+            TButton():New(   01,   010,   "Selecionar Todos",oPanel,{||SelGrid(oOtherObject)},   60,10,,,.F.,.T.,.F.,,.F.,,,.F.   )   
+            TButton():New(   01,   080,   "Copiar Musicas",oPanel,{||CopiaMus(oOtherObject)},   80,10,,,.F.,.T.,.F.,,.F.,,,.F.   )
 Return  oPanel
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} BotaoAlb
-    Cria dois botÃµes, sendo um para selecionar todos e outro para copiar as mÃºsicas
+    Cria dois botões, sendo um para selecionar todos e outro para copiar as músicas
     de um determinado album. 
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param oPanel Responsavel para criar o nosso panel dos botÃµes
-    @param oOtherObject Responsavel para receber a funÃ§Ã£o de selecionar/copiar musicas.
+    @param oPanel Responsavel para criar o nosso panel dos botões
+    @param oOtherObject Responsavel para receber a função de selecionar/copiar musicas.
     
     Return oPanel
     
 /*/
+//-------------------------------------------------------------------
 
 Static function BotaoAlb(oPanel,oOtherObject)
-  Â   Â   Â   Â TButton():New(   245,  Â 350,  Â "Selecionar Todos",oPanel,{||SelGridA(oOtherObject)},  Â 60,10,,,.F.,.T.,.F.,,.F.,,,.F.  Â )   Â 
-  Â   Â   Â   Â TButton():New(   245,   420,  Â "Copiar Musicas",oPanel,{||CopiaMusAl(oOtherObject)},  Â 80,10,,,.F.,.T.,.F.,,.F.,,,.F.  Â )  
+            TButton():New(   245,   350,   "Selecionar Todos",oPanel,{||SelGridA(oOtherObject)},   60,10,,,.F.,.T.,.F.,,.F.,,,.F.   )    
+            TButton():New(   245,   420,   "Copiar Musicas",oPanel,{||CopiaMusAl(oOtherObject)},   80,10,,,.F.,.T.,.F.,,.F.,,,.F.   )  
 Return  oPanel  
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} SelGrid
-    FunÃ§Ã£o que seleciona todos os artitas, quando o botÃ£o selecionar todos Ã© clicado. 
+    Função que seleciona todos os artitas, quando o botão selecionar todos é clicado. 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCA, para assim ser possivel selecionar
     todas os artistas.
     @param oGrid recebe oOtherObject
     @param nX utilizado para fazer nosso contador
-    @param lValue utilizado para fazer a validaÃ§Ã£o se a autor estÃ¡ selecionado, ou nÃ£o
+    @param lValue utilizado para fazer a validação se a autor está selecionado, ou não
     @param nLineBkp utilizado para fazer o backup da linha que o usuario estava.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function SelGrid(oOtherObject) 
    
@@ -384,100 +402,104 @@ Static Function SelGrid(oOtherObject)
     local  nX
     Local lValue
     local nLineBkp := oGrid:GetLine()
-  Â   Â   Â   Â  
-        For nX := 1Â to oGrid:Length()  
-  Â   Â   Â   Â   Â   Â   Â   Â  
+             
+        For nX := 1 to oGrid:Length()  
+                         
             oGrid:Goline(nX)
-  Â   Â   Â   Â   Â   Â   Â   Â 
-            If !oGrid:isDeleted()  Â   Â   Â   Â   Â 
+                        
+            If !oGrid:isDeleted()               
                 
-                lValue :=Â oGrid:GetValue('SELECT')  Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                lValue := oGrid:GetValue('SELECT')                                    
                 
                 oGrid:LoadValue('SELECT',!lValue)
             Endif
-  Â   Â   Â   Â 
-        Next Â nX
-  Â   Â   Â   Â 
-    oGrid:Goline(nLineBkp)  Â   Â   Â   Â 
+            
+        Next  nX
+            
+    oGrid:Goline(nLineBkp)            
     
     oOtherObject:oControl:Refresh('BUSCA')
 
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaMus
-    Cria dois botÃµes, sendo um para selecionar todos e outro para copiar as mÃºsicas
+    Cria dois botões, sendo um para selecionar todos e outro para copiar as músicas
     de um determinado album. 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCAALB, para assim ser possivel selecionar
-    todas os Ã¡lbum.
+    todas os álbum.
     @param oGrid recebe oOtherObject
     @param nX utilizado para fazer nosso contador
-    @param lSelected utilizado para fazer a validaÃ§Ã£o se a autor estÃ¡ selecionado, ou nÃ£o, para assim
+    @param lSelected utilizado para fazer a validação se a autor está selecionado, ou não, para assim
     fazer a copia de todas as suas musicas.
-    @param nLine para ver as linhas que estÃ£o selecionadas.
+    @param nLine para ver as linhas que estão selecionadas.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function CopiaMus(oOtherObject)
 
-    Local oGridÂ := oOtherObject:GetModel():GetModel('BUSCA') 
+    Local oGrid := oOtherObject:GetModel():GetModel('BUSCA') 
     Local nX
     local lSelected 
     Local oGridAutores := oOtherObject:GetModel():GetModel("ZA8DETAIL") 
     Local nLine := oGridAutores:GetLine()
 
-        For nX := 1 To oGrid:Length()       Â    Â   Â   Â 
+        For nX := 1 To oGrid:Length()                  
  
             If !oGrid:isDeleted()
      
                 lSelected := oGrid:GetValue('SELECT',nX)
-               Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                                                 
                 If lSelected
 
                     u_CopiMus(oGrid:GetValue("ZA0_CODIGO", nX), ,oGridAutores)
 
-                Endif  Â 
+                Endif   
             
-            Endif  Â 
-      Â   Next nX
+            Endif   
+         Next nX
 
         oOtherObject:oControl:Refresh('BUSCA')
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaAlb
     Ativa o modelo ZA0, para mostrar os autores cadastrados.
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param oStructZA0 Pega a Ã¡rea da tabela ZA3
-    @param cMyFilial Recebe o cÃ³digo da nossa filial
+    @param oStructZA0 Pega a área da tabela ZA3
+    @param cMyFilial Recebe o código da nossa filial
     @param oGridConsulta recebe o modelo BUSCA
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function AfterActivate(oModel)
     
     local oStructZA0 := ZA0->(GetArea())
-    local cMyFilial  Â := xFilial('ZA0')
+    local cMyFilial   := xFilial('ZA0')
     Local oGridConsulta := oModel:GetModel("BUSCA")
-      Â 
-        If oModel:GetOperation() == 3 .or. oModel:GetOperation() == 4   Â   Â   Â 
+       
+        If oModel:GetOperation() == 3 .or. oModel:GetOperation() == 4          
         ZA0->(DbSetOrder(1))
         ZA0->(DBGoTop())
-      Â   Â   Â   Â   Â   Â   Â   Â 
-            While ZA0->(!EOF())  .and. ZA0->ZA0_FILIAL == cMyFilial  Â   Â   Â   Â   Â              
-                                     Â   Â   Â   Â   Â   Â   Â   Â   Â  
-                If !oGridConsulta:IsEmpty()                      Â 
+                            
+            While ZA0->(!EOF())  .and. ZA0->ZA0_FILIAL == cMyFilial                            
+                                                               
+                If !oGridConsulta:IsEmpty()                       
                     oGridConsulta:AddLine()  
-                EndifÂ   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                Endif                                  
                 
                 oGridConsulta:LoadValue("ZA0_CODIGO",ZA0->ZA0_CODIGO)
                 oGridConsulta:LoadValue("ZA0_NOME",ZA0->ZA0_NOME)  
-      Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â  
+                                         
                 ZA0->(DbSkip())
             EndDo
         Endif
@@ -487,21 +509,23 @@ Static Function AfterActivate(oModel)
     
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaMus
-    Copia as mÃºsicas que estÃ£o selecionadas. 
+    Copia as músicas que estão selecionadas. 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCA, para assim ser possivel selecionar
-    todas os Ã¡lbum.
-    @param aArea recebe a Ã¡rea que estÃ¡ adivinha.
+    todas os álbum.
+    @param aArea recebe a área que está adivinha.
     @param nX utilizado para fazer nosso contador
-    @param cPergunta recebe o cÃ³digo do autor, para fazer o while para adicionar as mÃºsicas
+    @param cPergunta recebe o código do autor, para fazer o while para adicionar as músicas
     desse autor.
-    @param nLine para ver as linhas que o usuario estÃ¡.
+    @param nLine para ver as linhas que o usuario está.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 User Function CopiMus(cPergunta,oModel, oGridModel)
 
@@ -541,7 +565,7 @@ local oModel
             
             Else
 
-               Help(NIL, NIL, "Musica ja adicionada", NIL, "EstÃ¡ musica ja foi adicionada!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor, revise o cÃ³digo, e tente novamente!"})
+               Help(NIL, NIL, "Musica ja adicionada", NIL, "Está musica ja foi adicionada!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor, revise o código, e tente novamente!"})
             EndIf
             
             DbSkip()
@@ -549,7 +573,7 @@ local oModel
         EndDo
     Else
 
-        Help(NIL, NIL, "CÃ³digo invalido", NIL, "CÃ³digo invalido", 1, 0, NIL, NIL, NIL, NIL, NIL, {"CÃ³digo invalido, por favor, revise!"})
+        Help(NIL, NIL, "Código invalido", NIL, "Código invalido", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Código invalido, por favor, revise!"})
 
     EndIf
 
@@ -557,38 +581,40 @@ local oModel
 
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaAlb
-    Ativa o modelo ZA3, para mostrar os Ã¡lbuns cadastrados.
+    Ativa o modelo ZA3, para mostrar os álbuns cadastrados.
     @author Matheus S. Oliveira
     @since 28/11/2019
-    @param oStructZA3 Pega a Ã¡rea da tabela ZA3
-    @param cMyFilial Recebe o cÃ³digo da nossa filial
+    @param oStructZA3 Pega a área da tabela ZA3
+    @param cMyFilial Recebe o código da nossa filial
     @param oGridConsulta recebe o modelo BUSCAALB
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function AfterAlb(oModel)
 
     local oStructZA3 := ZA3->(GetArea()) 
-    local cMyFilial  Â := xFilial('ZA3')
+    local cMyFilial   := xFilial('ZA3')
     Local oGridConsulta := oModel:GetModel("BUSCAALB")
-      Â   Â  
-        If oModel:GetOperation() == 3 .or. oModel:GetOperation() == 4 Â   Â  
+           
+        If oModel:GetOperation() == 3 .or. oModel:GetOperation() == 4      
         
         ZA3->(DbSetOrder(2))
         ZA3->(DBGoTop())
-      Â   Â   Â   Â   Â   Â   Â   Â 
-         While ZA3->(!EOF())  .and. ZA3->ZA3_FILIAL == cMyFilial  Â   Â   Â   Â   Â              
-                                     Â   Â   Â   Â   Â   Â   Â   Â   Â  
-                If !oGridConsulta:IsEmpty()                      Â 
+                            
+         While ZA3->(!EOF())  .and. ZA3->ZA3_FILIAL == cMyFilial                            
+                                                               
+                If !oGridConsulta:IsEmpty()                       
                     oGridConsulta:AddLine()  
-                EndifÂ   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                Endif                                  
                 
                 oGridConsulta:LoadValue("ZA3_ALBUM",ZA3->ZA3_ALBUM)
                 oGridConsulta:LoadValue("ZA3_DESCRI",ZA3->ZA3_DESCRI)  
-      Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â  
+                                         
                 ZA3->(DbSkip())
             EndDo 
         
@@ -598,20 +624,22 @@ Static Function AfterAlb(oModel)
 
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} SelGrid
-    FunÃ§Ã£o que seleciona todos os artitas, quando o botÃ£o selecionar todos Ã© clicado. 
+    Função que seleciona todos os artitas, quando o botão selecionar todos é clicado. 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCAALB, para assim ser possivel selecionar
-    todas os Ã¡lbum.
+    todas os álbum.
     @param oGrid recebe oOtherObject
     @param nX utilizado para fazer nosso contador
-    @param lValue utilizado para fazer a validaÃ§Ã£o se a autor estÃ¡ selecionado, ou nÃ£o
+    @param lValue utilizado para fazer a validação se a autor está selecionado, ou não
     @param nLineBkp utilizado para fazer o backup da linha que o usuario estava.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function SelGridA(oOtherObject)
 
@@ -619,84 +647,88 @@ Static Function SelGridA(oOtherObject)
     local  nX
     Local lValue
     local nLineBkp := oGrid:GetLine()
-  Â   Â   Â   Â  
-        For nX := 1Â to oGrid:Length()  
-  Â   Â   Â   Â   Â   Â   Â   Â  
+             
+        For nX := 1 to oGrid:Length()  
+                         
             oGrid:Goline(nX)
-  Â   Â   Â   Â   Â   Â   Â   Â 
-            If !oGrid:isDeleted()  Â   Â   Â   Â   Â 
+                        
+            If !oGrid:isDeleted()               
                 
-                lValue :=Â oGrid:GetValue('SELECT')  Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                lValue := oGrid:GetValue('SELECT')                                    
                 
                 oGrid:LoadValue('SELECT',!lValue)
             Endif
-  Â   Â   Â   Â 
-        Next Â nX
-  Â   Â   Â   Â 
-    oGrid:Goline(nLineBkp)  Â   Â   Â   Â 
+            
+        Next  nX
+            
+    oGrid:Goline(nLineBkp)            
     
     oOtherObject:oControl:Refresh('BUSCAALB')
 
 Return
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaMusAl
-    Copia as mÃºsicas dos albuns que estÃ£o selecionados.
+    Copia as músicas dos albuns que estão selecionados.
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCAALB, para assim ser possivel selecionar
-    todas os Ã¡lbum.
+    todas os álbum.
     @param oGrid recebe oOtherObject
     @param nX utilizado para fazer nosso contador
-    @param lSelected utilizado para fazer a validaÃ§Ã£o se a autor estÃ¡ selecionado, ou nÃ£o, para assim
+    @param lSelected utilizado para fazer a validação se a autor está selecionado, ou não, para assim
     fazer a copia de todas as suas musicas.
-    @param nLine para ver as linhas que estÃ£o selecionadas.
+    @param nLine para ver as linhas que estão selecionadas.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 Static Function CopiaMusAl(oOtherObject)
 
-    Local oGridÂ := oOtherObject:GetModel():GetModel('BUSCAALB') 
+    Local oGrid := oOtherObject:GetModel():GetModel('BUSCAALB') 
     Local nX
     local lSelected 
     Local oGridAutores := oOtherObject:GetModel():GetModel("ZA8DETAIL") 
     Local nLine := oGridAutores:GetLine()
 
-        For nX := 1 To oGrid:Length()       Â    Â   Â   Â 
+        For nX := 1 To oGrid:Length()                  
  
             If !oGrid:isDeleted()
      
                 lSelected := oGrid:GetValue('SELECT',nX)
-               Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â   Â 
+                                                 
                 If lSelected
 
                     u_CopiaAlb(oGrid:GetValue("ZA3_ALBUM", nX), ,oGridAutores) 
 
-                Endif  Â 
+                Endif   
             
-            Endif  Â 
-      Â   Next nX
+            Endif   
+         Next nX
 
         oOtherObject:oControl:Refresh('BUSCAALB') 
 Return 
 
+//-------------------------------------------------------------------
 /*/{Protheus.doc} CopiaAlb
-    Cria dois botÃµes, sendo um para selecionar todos e outro para copiar as mÃºsicas
+    Cria dois botões, sendo um para selecionar todos e outro para copiar as músicas
     de um determinado album. 
     @author Matheus S. Oliveira
     @since 28/11/2019
     @param oOtherObject Recebe o nosso grid de BUSCAALB, para assim ser possivel selecionar
-    todas os Ã¡lbum.
-    @param aArea recebe a Ã¡rea que estÃ¡ adivinha.
+    todas os álbum.
+    @param aArea recebe a área que está adivinha.
     @param nX utilizado para fazer nosso contador
-    @param cPergunta recebe o cÃ³digo do album, para fazer o while para adicionar as mÃºsicas
+    @param cPergunta recebe o código do album, para fazer o while para adicionar as músicas
     desse album
-    @param nLine para ver as linhas que estÃ£o selecionadas.
+    @param nLine para ver as linhas que estão selecionadas.
 
     Return NIL
     
 /*/
+//-------------------------------------------------------------------
 
 User Function CopiaAlb(cPergunta,oModel, oGridModel) 
 
@@ -736,7 +768,7 @@ local oModel
             
             Else
 
-               Help(NIL, NIL, "Musica ja adicionada", NIL, "EstÃ¡ musica ja foi adicionada!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor, revise o cÃ³digo, e tente novamente!"})
+               Help(NIL, NIL, "Musica ja adicionada", NIL, "Está musica ja foi adicionada!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor, revise o código, e tente novamente!"})
             EndIf
             
             DbSkip()
@@ -744,7 +776,7 @@ local oModel
         EndDo
     Else
 
-        Help(NIL, NIL, "CÃ³digo invalido", NIL, "CÃ³digo invalido", 1, 0, NIL, NIL, NIL, NIL, NIL, {"CÃ³digo invalido, por favor, revise!"})
+        Help(NIL, NIL, "Código invalido", NIL, "Código invalido", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Código invalido, por favor, revise!"})
 
     EndIf
 
