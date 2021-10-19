@@ -11,9 +11,9 @@ User Function CopiMusAut(oModel)
     DbSelectArea("ZA5")
     DbSetOrder(1) 
 
-    /*A Função PadR serve para preenche todos os campos que ficaram em branco. Por exemplo, coloquei apenas 1 zero
-    no campo, entretanto ele tem o tamanho de 6 caracter, essa função preenchera todos os espaços em branco com espaço para a direita.
-    A Função TamSx3, serve para mostrar quando caracter tem tal campo na Tabela Sx3.
+    /*A FunÃ§Ã£o PadR serve para preenche todos os campos que ficaram em branco. Por exemplo, coloquei apenas 1 zero
+    no campo, entretanto ele tem o tamanho de 6 caracter, essa funÃ§Ã£o preenchera todos os espaÃ§os em branco com espaÃ§o para a direita.
+    A FunÃ§Ã£o TamSx3, serve para mostrar quanto caracter tem tal campo na Tabela Sx3.
     */
     If DbSeek(xFilial('ZA5') + ZA5->ZA5_MUSICA)    
 
@@ -24,14 +24,14 @@ User Function CopiMusAut(oModel)
 
                 oGridModel:SetValue("ZA5_INTER",ZA5->ZA5_INTER) //Preenche a linha criada no grid
             Else
-                Help(NIL, NIL, "Autor já adicionado!", NIL, "Autor já adicionado na lista!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Autor já adicionado, por favor, tente novamente!"})
+                Help(NIL, NIL, "Autor jÃ¡ adicionado!", NIL, "Autor jÃ¡ adicionado na lista!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Autor jÃ¡ adicionado, por favor, tente novamente!"})
             EndIf
                 ZA5-> (DbSkip()) 
 
             EndDo  
 
         Else
-            Help(NIL, NIL, "Código invalido!", NIL, "Código inexistente", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Revise o código inserido e tente novamente!"})
+            Help(NIL, NIL, "CÃ³digo invalido!", NIL, "CÃ³digo inexistente", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Revise o cÃ³digo inserido e tente novamente!"})
  
         EndIf 
     
