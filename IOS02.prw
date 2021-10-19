@@ -1,7 +1,6 @@
 #include "protheus.ch"
 #include "fwmvcdef.ch"
 
-//-------------------------------------------------------------------
 /*/{Protheus.doc} Playlist
     Cria o Browse da nossa rotina da playlist 
     @author Matheus S. Oliveira
@@ -12,7 +11,6 @@
     Browse no Protheus. 
     @return nil
 /*/
-//-------------------------------------------------------------------
 
 Return
 
